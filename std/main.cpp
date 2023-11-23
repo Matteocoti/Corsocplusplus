@@ -1,7 +1,4 @@
-#include <cstdio>
-#include <cstdlib>
-#include <cassert>
-#include <cstring>
+#include <fstream>
 #include <utility>
 #include <vector>
 #include <algorithm>
@@ -31,26 +28,18 @@
  */
 auto leggiDaFile(const char* filePath) {
 
-    FILE *fi;
-    
-    fi = fopen(filePath, "r"); 
+    std::ifstream is(filePath);
 
     std::vector <double> v;
 
-    if (fi == NULL) {
-        printf("Error while opening the input file\n");
-        return v;
-    }
-    
-    while  (1) {
-        double tmp;
+    // Se lo stream viene rappresentato come un bool, il risultato é l'esito della costruzione dello
+    // stream, ovvero il suo stato (corrisponde al metodo fail())
+    if (!is) return v;
 
-        if (fscanf(fi, "%lf", &tmp) != 1) break;
-        
-        v.push_back(tmp);
+    double num;
+    while  (is >> num) {
+        v.push_back(num);
     }
-
-    fclose(fi);
 
     return v;
 }
@@ -66,28 +55,18 @@ int main(int argc, char** argv) {
         return 1;
     }
 
-    FILE *fo;
-
+    FILE* fo;
+    
     // vector v(); // Most vexing parsing -> pensa sia una funzione v che restituisce un vector 
 
     auto v =  leggiDaFile(argv[1]);
 
-    fo = fopen(argv[2], "w"); 
+    std::ofstream os(argv[2]); 
 
-    if (fo == NULL) {
-        printf("Error while opening the output file\n");
-        return 3; 
-    }
+    if (!os) return 3; 
     
     // Si può vedere il codice sorgente perché é una funzione a template, quindi non si può compilare prima
     sort(v.begin(), v.end());
-
-    // fprintf non é una funzione di c++, quindi non c'é modo per dire alla funzione che 
-    // v sia un vettore di T.
-    for (size_t j = 0; j < v.size(); j++) {
-        fprintf(fo, "%f\n", v[j]);
-    }
-
     // Se v fosse una lista, il funzionamento sarebbe lo stesso a meno del tipo dell'iteratore
     auto it_stop = v.end();
 
@@ -95,11 +74,9 @@ int main(int argc, char** argv) {
     // La forma si chiama Range Based For 
     // x é solo il nome che diamo per accedere il nome corrente di v
     for (const auto& x : v) {
-        fprintf(fo, "%f\n", x);
+        os << x << '\n';
     }
-
-    fclose(fo);
-
+    
     return 0;
 }
 
