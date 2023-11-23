@@ -14,7 +14,7 @@ int cmpint(const void *a, const void *b)
     else if (*pa == *pb) return 0;
     else return 1;
 
-    // Versione figa 
+    // Versione figa   
     //return (*pa > * pb) - (*pa < *pb);
 }
 
