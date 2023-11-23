@@ -56,10 +56,11 @@ auto leggiDaFile(const char* filePath) {
 
 int main(int argc, char** argv) {
 
+    using std::vector;
     // Nel c++ c'è l'ADL (Argument Dependent Lookup) -> ricerca dipendente degli argomenti
     // Se specifico il namespace per la classe vector, allora per la funzione swap viene cercato anche
     // all'interno del namespace degli argomenti.
-    std::vector<char> c1(3), c2(2);
+    vector<char> c1(3), c2(2);
 
     c1[0] = 0;
     c2[0] = 'x';
@@ -75,7 +76,7 @@ int main(int argc, char** argv) {
 
     // vector v(); // Most vexing parsing -> pensa sia una funzione v che restituisce un vector 
 
-    std::vector<double> v =  leggiDaFile(argv[1]);
+    vector<double> v =  leggiDaFile(argv[1]);
 
     fo = fopen(argv[2], "w"); 
 
@@ -90,6 +91,17 @@ int main(int argc, char** argv) {
     for (size_t j = 0; j < v.size(); j++) {
         fprintf(fo, "%f\n", v[j]);
     }
+
+    // Se v fosse una lista, il funzionamento sarebbe lo stesso a meno del tipo dell'iteratore
+    vector<double>::iterator it_start = v.begin();
+    vector<double>::iterator it_stop = v.end(); // v.end() é fuori da v
+
+    for (vector<double>::iterator it = it_start; it != it_stop; ++it) {
+        double x = *it;
+        fprintf(fo, "%f\n", x);
+    }
+
+
 
     fclose(fo);
 
