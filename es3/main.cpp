@@ -2,12 +2,12 @@
 #include <stdlib.h>
 #include <assert.h>
 #include <string.h>
-
+#include <utility>
 
 
 
 /**
- * Con typename si indica che T é un tipo di dato (es. int, double, ecc)
+ * Con typename si indica che T é un tipo di dato (es. int, double, ecc). Equivalente a dire <class T>.
  */
 template <typename T>
 /**
@@ -160,6 +160,16 @@ struct vector {
         return *this;
     }
     //void operator=(const vector& other) = delete; -> stessa cosa del copy contructor
+
+    // Per la funzione di SWAP sarebbe corretto creare un metodo per gestire direttamente gli attributi e 
+    // allo stesso tempo sarebbe corretto avere una funzione esterna per farlo (ma non accederi direttamente agli attributi, overhead!)
+    // -> soluzione: funzioni amiche
+    friend void swap(vector<T>& a, vector<T>& b) {
+        // Scambio le capacità utilizzando la funzione dalla libreria standard
+        std::swap(a.c, b.c);
+        std::swap(a.n, b.n);
+        std::swap(a.dati, b.dati);
+    }
 };
 
 
@@ -173,6 +183,9 @@ vector<double> leggiDaFile(const char* filePath) {
     fi = fopen(filePath, "r"); 
 
     vector <double> v;
+    vector <char> c1, c2;
+
+    swap(c1, c2);
 
     if (fi == NULL) {
         printf("Error while opening the input file\n");
@@ -193,6 +206,12 @@ vector<double> leggiDaFile(const char* filePath) {
 }
 
 int main(int argc, char** argv) {
+
+    vector<char> c1(3), c2(2);
+
+    c1[0] = 0;
+    c2[0] = 'x';
+    swap(c1, c2);
 
     // Controllo che gli argomenti passati siano due
     if (argc < 2) {
