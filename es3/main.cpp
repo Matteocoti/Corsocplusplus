@@ -161,8 +161,10 @@ struct vector {
 };
 
 
-
-vector leggiDaFile(const char* filePath) {
+/**
+ * vettore in cui parametro T é int
+*/
+vector<int> leggiDaFile(const char* filePath) {
 
     FILE *fi;
     
@@ -172,7 +174,7 @@ vector leggiDaFile(const char* filePath) {
         printf("Error while opening the input file\n");
         return vector();
     }
-    vector v;
+    vector<int> v;
     while  (1) {
         int tmp;
 
