@@ -123,16 +123,14 @@ int main(int argc, char** argv) {
     }
 
     // Se v fosse una lista, il funzionamento sarebbe lo stesso a meno del tipo dell'iteratore
-    vector<double>::iterator it_start = v.begin();
-    vector<double>::iterator it_stop = v.end(); // v.end() é fuori da v
 
-    for (vector<double>::iterator it = it_start; it != it_stop; ++it) {
+    for (auto it = v.begin(); it != v.end(); ++it) {
         double x = *it;
         fprintf(fo, "%f\n", x);
     }
 
     // Per la lista non cambia nulla
-    for (list<double>::iterator it = l.begin(); it != l.end(); ++it) {
+    for (auto it = l.begin(); it != l.end(); ++it) {
         double x = *it;
         fprintf(fo, "%f\n", x);
     }
