@@ -94,10 +94,7 @@ struct vector {
         dati[n] = val;
         ++n;
     }
-    void sort()
-    {
-        qsort(dati, n, sizeof(int), *cmpint);
-    }
+
     size_t size() const
     {
         return n;
