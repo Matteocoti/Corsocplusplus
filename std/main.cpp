@@ -124,15 +124,10 @@ int main(int argc, char** argv) {
 
     // Se v fosse una lista, il funzionamento sarebbe lo stesso a meno del tipo dell'iteratore
     auto it_stop = v.end();
-    for (auto it = v.begin(); it != it_stop; ++it) {
-        double x = *it;
-        fprintf(fo, "%f\n", x);
-    }
 
-    // Per la lista non cambia nulla
-    auto it_stop_l = l.end();
-    for (auto it = l.begin(); it != it_stop_l; ++it) {
-        double x = *it;
+    // Prendi v e chiama begin e hai l'iteratore, poi ad ogni ciclo chiami il next e lo fai fino ad end.
+    // La forma si chiama Range Based For
+    for (auto x : v) {
         fprintf(fo, "%f\n", x);
     }
 
