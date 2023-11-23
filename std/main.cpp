@@ -123,14 +123,15 @@ int main(int argc, char** argv) {
     }
 
     // Se v fosse una lista, il funzionamento sarebbe lo stesso a meno del tipo dell'iteratore
-
-    for (auto it = v.begin(); it != v.end(); ++it) {
+    auto it_stop = v.end();
+    for (auto it = v.begin(); it != it_stop; ++it) {
         double x = *it;
         fprintf(fo, "%f\n", x);
     }
 
     // Per la lista non cambia nulla
-    for (auto it = l.begin(); it != l.end(); ++it) {
+    auto it_stop_l = l.end();
+    for (auto it = l.begin(); it != it_stop_l; ++it) {
         double x = *it;
         fprintf(fo, "%f\n", x);
     }
