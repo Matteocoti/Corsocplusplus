@@ -160,6 +160,7 @@ struct vector {
         // La parola chiave using significa prendi quella funzione e portala nel namespace che sto usando
         // adesso
         using std::swap;
+        // Anche in questo caso c'é ADL. c ed n sono dei size_t, quindi appartengono alla std che ho importato con using.
         swap(a.c, b.c);
         swap(a.n, b.n);
         swap(a.dati, b.dati);
@@ -199,6 +200,9 @@ auto leggiDaFile(const char* filePath) {
 
 int main(int argc, char** argv) {
 
+    // Nel c++ c'è l'ADL (Argument Dependent Lookup) -> ricerca dipendente degli argomenti
+    // Se specifico il namespace per la classe vector, allora per la funzione swap viene cercato anche
+    // all'interno del namespace degli argomenti.
     march::vector<char> c1(3), c2(2);
 
     c1[0] = 0;
