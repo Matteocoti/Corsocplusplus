@@ -172,7 +172,7 @@ vector<int> leggiDaFile(const char* filePath) {
 
     if (fi == NULL) {
         printf("Error while opening the input file\n");
-        return vector();
+        return vector<int>();
     }
     vector<int> v;
     while  (1) {
@@ -210,14 +210,13 @@ int main(int argc, char** argv) {
     }
     //v.sort();
 
+    // fprintf non é una funzione di c++, quindi non c'é modo per dire alla funzione che 
+    // v sia un vettore di T.
     for (size_t j = 0; j < v.size(); j++) {
         fprintf(fo, "%d\n", v[j]);
     }
 
     fclose(fo);
-
-    v[1] = 6;
-    vector y = v;
 
     return 0;
 }
