@@ -74,12 +74,22 @@ struct vector {
         if (n == c)
         {
             c = c * 2;
-            
-            int *tmp = reinterpret_cast<int*> (realloc(dati,c * sizeof(int)));
-            if (tmp == NULL)
-                exit(1);
+
+            // La realloc non richiama il costruttore -> con le classi non va bene
+            // int *tmp = reinterpret_cast<int*> (realloc(dati,c * sizeof(int)));
+
+            int *tmp = new int[c];
+            // Ci copiamo i vecchi dati
+            for (size_t i = 0; i < n; i++){
+                tmp[i] = dati[i];
+            }
+
+            // Libero la vecchia memoria
+            delete[] dati;
 
             dati = tmp;
+            // Non mi serve più -> lo faccio puntare a NULL
+            tmp = nullptr;
         }
         dati[n] = val;
         ++n;
