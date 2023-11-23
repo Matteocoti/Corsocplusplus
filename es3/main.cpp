@@ -3,28 +3,20 @@
 #include <assert.h>
 #include <string.h>
 
-int cmpint(const void *a, const void *b)
-{
-    const int *pa = reinterpret_cast<const int *>(a);
-    const int *pb = reinterpret_cast<const int *>(b);
 
-    // Se si fa (*pa - *pb) per numeri grandi, il risultato può andare
-    // in overflow, quindi restituire il risultato sbagliato
-    if (*pa < *pb) return -1;
-    else if (*pa == *pb) return 0;
-    else return 1;
 
-    // Versione figa 
-    //return (*pa > * pb) - (*pa < *pb);
-}
 
+/**
+ * Con typename si indica che T é un tipo di dato (es. int, double, ecc)
+ */
+template <typename T>
 /**
  * Contiene gli elementi per gestire i dati, ma con malloc() i dati 
  * sono sull'heap (memoria allocata dinamicamente)
  */
 struct vector {
     size_t c;  // capacità allocata
-    int *dati; // puntatore ai dati
+    T *dati;   // puntatore ai dati (puntatore a un dato di tipo T)
     size_t n;  // numero elementi
 
     // Costruttore della classe
@@ -41,7 +33,7 @@ struct vector {
         // dati = new  int; -> per allocare int 
         // delete dati -> per deallocare
         
-        dati = new int[c]; // alloco c int uno a fianco all'altro in memoria: non si controllo più se non é NULL, perché
+        dati = new T[c]; // alloco c elementi di tipo T uno a fianco all'altro in memoria: non si controllo più se non é NULL, perché
         // nel caso viene tirata un'eccezione
 
         n = size;
@@ -68,8 +60,12 @@ struct vector {
     {
         delete[] dati;
     }
-
-    void push_back(int val)
+    /**
+     * Si passa a reference perché T potrebbe essere una classe. Passandolo come copia 
+     * si crea un overhead inutile e poco efficiente. Meglio per reference.
+     * Lo standard in c++ é passare i parametri come const reference.
+     */
+    void push_back(const T& val)
     {
         if (n == c)
         {
@@ -78,7 +74,7 @@ struct vector {
             // La realloc non richiama il costruttore -> con le classi non va bene
             // int *tmp = reinterpret_cast<int*> (realloc(dati,c * sizeof(int)));
 
-            int *tmp = new int[c];
+            T *tmp = new T[c];
             // Ci copiamo i vecchi dati
             for (size_t i = 0; i < n; i++){
                 tmp[i] = dati[i];
@@ -100,7 +96,7 @@ struct vector {
         return n;
     }
     // Ritorna un int -> dobbiamo far tornare una reference costante (deve comportarsi come [])
-    const int& at(const size_t pos) const
+    const T& at(const size_t pos) const
     {
         // Se la condizione non si verifica, in modalità debug si inchioda
         // in release non viene considerato
@@ -109,7 +105,7 @@ struct vector {
     }
 
     // Ritorna un int -> dobbiamo far tornare una reference costante (deve comportarsi come [])
-    int& at(const size_t pos) 
+    T& at(const size_t pos) 
     {
         // Se la condizione non si verifica, in modalità debug si inchioda
         // in release non viene considerato
@@ -122,13 +118,13 @@ struct vector {
     // Nel primo caso é int, nel secondo caso é const int
     // La prima viene chiamata se il vettore é modificabile, la seconda 
     // se non lo é.
-    int& operator [](const size_t pos)
+    T& operator [](const size_t pos)
     {
 
         return dati[pos];
     }
 
-    const int& operator [](const size_t pos) const
+    const T& operator [](const size_t pos) const
     {
         // Se la condizione non si verifica, in modalità debug si inchioda
         // in release non viene considerato
@@ -153,7 +149,7 @@ struct vector {
         if (other.n > c) {
             delete[] dati; 
             c = other.n + 1;
-            dati = new int[c];
+            dati = new T[c];
         } 
         n = other.n;
         for (size_t i = 0; i < n; i++){
@@ -210,7 +206,7 @@ int main(int argc, char** argv) {
         printf("Error while opening the output file\n");
         return 3; 
     }
-    v.sort();
+    //v.sort();
 
     for (size_t j = 0; j < v.size(); j++) {
         fprintf(fo, "%d\n", v[j]);
