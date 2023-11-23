@@ -5,6 +5,7 @@
 #include <utility>
 #include <vector>
 #include <list>
+#include <set>
 
 /**
  * Tre categorie di cose dentro la libreria: 
@@ -35,7 +36,7 @@ auto leggiDaFile(const char* filePath) {
     
     fi = fopen(filePath, "r"); 
 
-    std::vector <double> v;
+    std::set <double> v;
 
     if (fi == NULL) {
         printf("Error while opening the input file\n");
@@ -47,7 +48,7 @@ auto leggiDaFile(const char* filePath) {
 
         if (fscanf(fi, "%lf", &tmp) != 1) break;
         
-        v.push_back(tmp);
+        v.insert(tmp);
     }
 
     fclose(fi);
@@ -83,16 +84,7 @@ auto leggiList(const char* filePath) {
 
 int main(int argc, char** argv) {
 
-    using std::vector;
-    using std::list;
-    // Nel c++ c'è l'ADL (Argument Dependent Lookup) -> ricerca dipendente degli argomenti
-    // Se specifico il namespace per la classe vector, allora per la funzione swap viene cercato anche
-    // all'interno del namespace degli argomenti.
-    vector<char> c1(3), c2(2);
-
-    c1[0] = 0;
-    c2[0] = 'x';
-    swap(c1, c2);
+    using std::set;
 
     // Controllo che gli argomenti passati siano due
     if (argc < 2) {
@@ -104,9 +96,7 @@ int main(int argc, char** argv) {
 
     // vector v(); // Most vexing parsing -> pensa sia una funzione v che restituisce un vector 
 
-    vector<double> v =  leggiDaFile(argv[1]);
-
-    list <double> l = leggiList(argv[1]);
+    auto v =  leggiDaFile(argv[1]);
 
     fo = fopen(argv[2], "w"); 
 
