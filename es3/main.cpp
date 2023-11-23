@@ -76,6 +76,9 @@ struct vector {
 
             // La parola chiave auto serve per dire al compilatore di capire automaticamente il tipo:
             // nei template aggiunge un sacco di flessibilità
+
+            // Poco efficiente perché chiamo sempre il costruttore: si risolve con il placement new, ovvero ci sono 
+            // due meccanismi separati: uno per allocare la memoria e uno per chiamare il costruttore quando serve.
             auto tmp = new T[c];
             // Ci copiamo i vecchi dati
             for (size_t i = 0; i < n; i++){
@@ -131,16 +134,6 @@ struct vector {
         // Se la condizione non si verifica, in modalità debug si inchioda
         // in release non viene considerato
         return dati[pos];
-    }
-
-    // Operatore di assegnamento
-    vector& operator=(vector&& other) {
-        delete[] dati; 
-        c = other.c;
-        n = other.n;
-        dati = other.dati;
-        other.dati = NULL;
-        return *this;
     }
 
     /**
