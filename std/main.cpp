@@ -4,8 +4,6 @@
 #include <string.h>
 #include <utility>
 #include <vector>
-#include <list>
-#include <set>
 
 /**
  * Tre categorie di cose dentro la libreria: 
@@ -36,33 +34,7 @@ auto leggiDaFile(const char* filePath) {
     
     fi = fopen(filePath, "r"); 
 
-    std::set <double> v;
-
-    if (fi == NULL) {
-        printf("Error while opening the input file\n");
-        return v;
-    }
-    
-    while  (1) {
-        double tmp;
-
-        if (fscanf(fi, "%lf", &tmp) != 1) break;
-        
-        v.insert(tmp);
-    }
-
-    fclose(fi);
-
-    return v;
-}
-
-auto leggiList(const char* filePath) {
-
-    FILE *fi;
-    
-    fi = fopen(filePath, "r"); 
-
-    std::list <double> v;
+    std::vector <double> v;
 
     if (fi == NULL) {
         printf("Error while opening the input file\n");
@@ -82,9 +54,10 @@ auto leggiList(const char* filePath) {
     return v;
 }
 
+
 int main(int argc, char** argv) {
 
-    using std::set;
+    using std::vector;
 
     // Controllo che gli argomenti passati siano due
     if (argc < 2) {
