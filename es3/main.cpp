@@ -166,9 +166,12 @@ struct vector {
     // -> soluzione: funzioni amiche
     friend void swap(vector<T>& a, vector<T>& b) {
         // Scambio le capacità utilizzando la funzione dalla libreria standard
-        std::swap(a.c, b.c);
-        std::swap(a.n, b.n);
-        std::swap(a.dati, b.dati);
+        // La parola chiave using significa prendi quella funzione e portala nel namespace che sto usando
+        // adesso
+        using std::swap;
+        swap(a.c, b.c);
+        swap(a.n, b.n);
+        swap(a.dati, b.dati);
     }
 };
 
