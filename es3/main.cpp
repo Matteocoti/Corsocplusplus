@@ -4,7 +4,7 @@
 #include <string.h>
 #include <utility>
 
-
+namespace march{
 
 /**
  * Con typename si indica che T é un tipo di dato (es. int, double, ecc). Equivalente a dire <class T>.
@@ -166,11 +166,12 @@ struct vector {
     }
 };
 
+}
 
 /**
  * vettore in cui parametro T é int
 */
-vector<double> leggiDaFile(const char* filePath) {
+march::vector<double> leggiDaFile(const char* filePath) {
 
     FILE *fi;
     
@@ -201,7 +202,7 @@ vector<double> leggiDaFile(const char* filePath) {
 
 int main(int argc, char** argv) {
 
-    vector<char> c1(3), c2(2);
+    march::vector<char> c1(3), c2(2);
 
     c1[0] = 0;
     c2[0] = 'x';
@@ -217,7 +218,7 @@ int main(int argc, char** argv) {
 
     // vector v(); // Most vexing parsing -> pensa sia una funzione v che restituisce un vector 
 
-    vector<double> v =  leggiDaFile(argv[1]);
+    marc::vector<double> v =  leggiDaFile(argv[1]);
 
     fo = fopen(argv[2], "w"); 
 
@@ -237,3 +238,4 @@ int main(int argc, char** argv) {
 
     return 0;
 }
+
