@@ -218,7 +218,7 @@ int main(int argc, char** argv) {
 
     // vector v(); // Most vexing parsing -> pensa sia una funzione v che restituisce un vector 
 
-    marc::vector<double> v =  leggiDaFile(argv[1]);
+    march::vector<double> v =  leggiDaFile(argv[1]);
 
     fo = fopen(argv[2], "w"); 
 
