@@ -143,20 +143,18 @@ struct vector {
         return *this;
     }
 
-    vector& operator=(const vector& other) {
-        // Check del self-assignment
-        // if (this == &other) {
-        //     return;
-        // }
-        if (other.n > c) {
-            delete[] dati; 
-            c = other.n + 1;
-            dati = new T[c];
-        } 
-        n = other.n;
-        for (size_t i = 0; i < n; i++){
-            dati[i] = other.dati[i];
-        }
+    /**
+     * Visto che se passo il vettore per copia, io sto già creando una copia del vettore
+     * che voglio assegnare, mi basta scambiare *this con questo. 
+     * All'uscita della funzione, cioé alla fine dello scope, viene comunque liberata la 
+     * memoria di other, quindi abbiamo già tutto. 
+     * Questo si chiama copy and swap idiom -> ci evita di riscrivere tutto ciò che é presente
+     * nel costruttore di copia.
+     * Other in questo caso viene realizzato tramite il costruttore di move, perché é temporaneo
+     * Questo si chiama copy/move and swap idiom.
+     */
+    vector& operator=(vector other) {
+        swap(*this, other);
         return *this;
     }
     //void operator=(const vector& other) = delete; -> stessa cosa del copy contructor
