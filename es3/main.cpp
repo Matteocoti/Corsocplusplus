@@ -99,7 +99,17 @@ struct vector {
     {
         return n;
     }
-    int at(const size_t pos) const
+    // Ritorna un int -> dobbiamo far tornare una reference costante (deve comportarsi come [])
+    const int& at(const size_t pos) const
+    {
+        // Se la condizione non si verifica, in modalità debug si inchioda
+        // in release non viene considerato
+        assert(pos < n);
+        return dati[pos];
+    }
+
+    // Ritorna un int -> dobbiamo far tornare una reference costante (deve comportarsi come [])
+    int& at(const size_t pos) 
     {
         // Se la condizione non si verifica, in modalità debug si inchioda
         // in release non viene considerato
