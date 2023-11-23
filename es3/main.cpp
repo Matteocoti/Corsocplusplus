@@ -74,7 +74,9 @@ struct vector {
             // La realloc non richiama il costruttore -> con le classi non va bene
             // int *tmp = reinterpret_cast<int*> (realloc(dati,c * sizeof(int)));
 
-            T *tmp = new T[c];
+            // La parola chiave auto serve per dire al compilatore di capire automaticamente il tipo:
+            // nei template aggiunge un sacco di flessibilità
+            auto tmp = new T[c];
             // Ci copiamo i vecchi dati
             for (size_t i = 0; i < n; i++){
                 tmp[i] = dati[i];
