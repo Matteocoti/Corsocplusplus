@@ -171,16 +171,13 @@ struct vector {
 /**
  * vettore in cui parametro T é int
 */
-march::vector<double> leggiDaFile(const char* filePath) {
+auto leggiDaFile(const char* filePath) {
 
     FILE *fi;
     
     fi = fopen(filePath, "r"); 
 
-    vector <double> v;
-    vector <char> c1, c2;
-
-    swap(c1, c2);
+    march::vector <double> v;
 
     if (fi == NULL) {
         printf("Error while opening the input file\n");
