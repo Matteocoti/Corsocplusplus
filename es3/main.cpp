@@ -164,21 +164,23 @@ struct vector {
 /**
  * vettore in cui parametro T é int
 */
-vector<int> leggiDaFile(const char* filePath) {
+vector<double> leggiDaFile(const char* filePath) {
 
     FILE *fi;
     
     fi = fopen(filePath, "r"); 
 
+    vector <double> v;
+
     if (fi == NULL) {
         printf("Error while opening the input file\n");
-        return vector<int>();
+        return v;
     }
-    vector<int> v;
+    
     while  (1) {
-        int tmp;
+        double tmp;
 
-        if (fscanf(fi, "%d", &tmp) != 1) break;
+        if (fscanf(fi, "%lf", &tmp) != 1) break;
         
         v.push_back(tmp);
     }
@@ -200,7 +202,7 @@ int main(int argc, char** argv) {
 
     // vector v(); // Most vexing parsing -> pensa sia una funzione v che restituisce un vector 
 
-    vector v =  leggiDaFile(argv[1]);
+    vector<double> v =  leggiDaFile(argv[1]);
 
     fo = fopen(argv[2], "w"); 
 
@@ -213,7 +215,7 @@ int main(int argc, char** argv) {
     // fprintf non é una funzione di c++, quindi non c'é modo per dire alla funzione che 
     // v sia un vettore di T.
     for (size_t j = 0; j < v.size(); j++) {
-        fprintf(fo, "%d\n", v[j]);
+        fprintf(fo, "%f\n", v[j]);
     }
 
     fclose(fo);
