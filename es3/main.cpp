@@ -171,7 +171,11 @@ struct vector {
 
 /**
  * vettore in cui parametro T é int
-*/
+ * 
+ * Questa dichiarazione é compatibile da c++17. Per le versioni prima si utilizza questa:
+ * 
+ * auto leggiDaFile(const char* filePath) -> march::vector<double>
+ */
 auto leggiDaFile(const char* filePath) {
 
     FILE *fi;
