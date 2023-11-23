@@ -4,6 +4,7 @@
 #include <string.h>
 #include <utility>
 #include <vector>
+#include <algorithm>
 
 /**
  * Tre categorie di cose dentro la libreria: 
@@ -77,7 +78,9 @@ int main(int argc, char** argv) {
         printf("Error while opening the output file\n");
         return 3; 
     }
-    //v.sort();
+    
+    // Si può vedere il codice sorgente perché é una funzione a template, quindi non si può compilare prima
+    sort(v.begin(), v.end());
 
     // fprintf non é una funzione di c++, quindi non c'é modo per dire alla funzione che 
     // v sia un vettore di T.
