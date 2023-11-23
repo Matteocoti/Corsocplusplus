@@ -126,8 +126,9 @@ int main(int argc, char** argv) {
     auto it_stop = v.end();
 
     // Prendi v e chiama begin e hai l'iteratore, poi ad ogni ciclo chiami il next e lo fai fino ad end.
-    // La forma si chiama Range Based For
-    for (auto x : v) {
+    // La forma si chiama Range Based For 
+    // x é solo il nome che diamo per accedere il nome corrente di v
+    for (const auto& x : v) {
         fprintf(fo, "%f\n", x);
     }
 
