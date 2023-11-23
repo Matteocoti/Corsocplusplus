@@ -8,15 +8,15 @@
 /**
  * Tre categorie di cose dentro la libreria: 
  * - container -> classi che rappresentano delle strutture dati (esempio vector, list, set)
- * 
+ * - iteratori -> meccanismi standardizzati per ciclare su i contenitori
+ * - algoritmi -> basati sugli iteratori su dei contenitori (molto efficienti)
 */
 
 /**
- * Vettori vs liste:
+ * Vettori vs liste vs set:
  * - liste più comode solo in alcuni casi e hanno senso solo se gli algoritmi gestiscono tutta la lista
  * - il vettore molto più veloce (se devo accedere al 50esimo elemento, so già dove trovarlo, mentre nelle liste no)
- * 
- * Il set é più veloce per cercare un elemento all'interno perché gestisce gli elementi tramite un labero binario. Quindi faccio 
+ * - set é più veloce per cercare un elemento all'interno perché gestisce gli elementi tramite un labero binario. Quindi faccio 
  * meno confronti (é fatto apposta).
  * 
 */
