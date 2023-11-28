@@ -113,10 +113,13 @@ int main()
     // 7 viene riconosciuto come un rational con 7 come numeratore (viene chiamato il costruttore rational(7))
     rational z = x + 7;
 
-    std::vector<rational> v ={ 1, rational(1,2), rational(-3,4), rational(-17, 245363837)};
-    std::sort(begin(v), end(v));
+    vector<rational> v ={ 1, rational(1,2), rational(-3,4)};
+    sort(begin(v), end(v));
 
-    copy(begin(v), end(v), std::ostream_iterator<rational>(std::cout, ","));
+    // Greater é un function object -> una classe che esegue il compito di una funzione
+    sort(begin(v), end(v), greater<rational>());
+
+    copy(begin(v), end(v), ostream_iterator<rational>(std::cout, ","));
 
     return 0;
 }
