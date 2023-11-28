@@ -37,6 +37,9 @@ auto leggiDaFile(const char* filePath) {
     if (!is) return v;
 
     double num;
+
+    // >> legge un byte da file e traduce il testo formattato in base 10 in un numero (salta anche i whitespace)
+    // >> = leggi del testo da un file e converte il testo in binario
     while  (is >> num) {
         v.push_back(num);
     }
