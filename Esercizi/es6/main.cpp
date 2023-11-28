@@ -20,5 +20,17 @@ int main() {
     for (const auto &x:nodup2(v_in)) {
         cout << x << endl;
     }
+
+    cout << "From vector with sort: " << endl;
+
+    for (const auto &x:nodupSort(v_in)) {
+        cout << x << endl;
+    }
+
+    cout << "From vector with hashmap: " << endl;
+
+    for (const auto &x:nodupHash(v_in)) {
+        cout << x << endl;
+    }
     return 0;
 }
