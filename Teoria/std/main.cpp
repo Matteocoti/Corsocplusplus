@@ -27,34 +27,6 @@
 */
 
 /**
- * vettore in cui parametro T é int
- * 
- * Questa dichiarazione é compatibile da c++17. Per le versioni prima si utilizza questa:
- * 
- * auto leggiDaFile(const char* filePath) -> march::vector<double>
- */
-auto leggiDaFile(const char* filePath) {
-
-    std::ifstream is(filePath);
-
-    std::vector <double> v;
-
-    // Se lo stream viene rappresentato come un bool, il risultato é l'esito della costruzione dello
-    // stream, ovvero il suo stato (corrisponde al metodo fail())
-    if (!is) return v;
-
-    double num;
-
-    // >> legge un byte da file e traduce il testo formattato in base 10 in un numero (salta anche i whitespace)
-    // >> = leggi del testo da un file e converte il testo in binario
-    while  (is >> num) {
-        v.push_back(num);
-    }
-
-    return v;
-}
-
-/**
  *  Nella libreria standard esistono gli adaptor che sono degli oggetti che ci permettono di trattare delle classi 
  * con degli iteratori
  * /
@@ -129,9 +101,12 @@ int main(int argc, char** argv) {
         return 1;
 
     // Permette di estrarre dati con >> (legge in formato testo)
-    std::istream_iterator<double> it_start(is);
-    std::istream_iterator<double> it_stop; // Se non gli passiamo lo stream é la fine del file (in stato EOF)
-    std::vector<double> v(it_start, it_stop);
+    // std::istream_iterator<double> it_start(is);
+    // std::istream_iterator<double> it_stop; // Se non gli passiamo lo stream é la fine del file (in stato EOF)
+    // std::vector<double> v(it_start, it_stop);
+
+    // Se non mettiamo le graffe, Most Vexing Espression -> viene interpretata come puntatore a funzione senza parametri
+    std::vector<double> v{std::istream_iterator<double>(is), std::istream_iterator<double>()};
 
     // Questo é superfluo, visto che vector ha un costruttore con gli iteratori, allora posso usare direttamente quello
     // for (auto it = it_start; it != it_stop; ++it) {
