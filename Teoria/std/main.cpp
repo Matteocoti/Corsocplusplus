@@ -6,6 +6,9 @@
 // Per standard output invece che su file
 #include <iostream> 
 
+// Nella libreria iterator c'é la classe che adatta uno stream in modo da poterlo gestire come 
+// se fosse una classe di elementi
+#include <iterator>
 
 /**
  * Tre categorie di cose dentro la libreria: 
@@ -51,6 +54,10 @@ auto leggiDaFile(const char* filePath) {
     return v;
 }
 
+/**
+ *  Nella libreria standard esistono gli adaptor che sono degli oggetti che ci permettono di trattare delle classi 
+ * con degli iteratori
+ * /
 
 // template<typename T>
 // bool scrivi_vettore(const std::string& fileName, const std::vector<T>& v){
@@ -110,18 +117,35 @@ int main(int argc, char** argv) {
     // Così chiamo il costruttore di copia
     //std::vector<int> b = a;
 
-    auto it_start = a.begin();
-    //auto it_stop = it_start + 3; // Con gli iteratori posso dire di avanzare di tre
-    auto it_stop = it_start;
-    advance(it_stop, 3); // Stessa cosa
-    std::vector<int> b(it_start, it_stop); // Anche in questo caso l'elemento puntato da it_stop é escluso
+    // auto it_start = a.begin();
+    // //auto it_stop = it_start + 3; // Con gli iteratori posso dire di avanzare di tre
+    // auto it_stop = it_start;
+    // advance(it_stop, 3); // Stessa cosa
+    // std::vector<int> b(it_start, it_stop); // Anche in questo caso l'elemento puntato da it_stop é escluso
 
+    std::ifstream is(argv[1]);
+
+    if (!is)
+        return 1;
+
+    // Permette di estrarre dati con >> (legge in formato testo)
+    std::istream_iterator<double> it_start(is);
+    std::istream_iterator<double> it_stop; // Se non gli passiamo lo stream é la fine del file (in stato EOF)
+    std::vector<double> v(it_start, it_stop);
+
+    // Questo é superfluo, visto che vector ha un costruttore con gli iteratori, allora posso usare direttamente quello
+    // for (auto it = it_start; it != it_stop; ++it) {
+    //     v.push_back(*it);
+    // }
+
+
+    // Estrai dei byte e li converte (leggi i dati binari ) std::istreambuf_iterator
 
     FILE* fo;
     
     // vector v(); // Most vexing parsing -> pensa sia una funzione v che restituisce un vector 
 
-    auto v =  leggiDaFile(argv[1]);
+    // auto v =  leggiDaFile(argv[1]);
 
     sort(v.begin(), v.end());
 
