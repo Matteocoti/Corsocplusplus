@@ -1,10 +1,12 @@
 #include <iostream>
 #include <cassert>
+#include <vector>
 
-struct rational
+class rational
 {
-    int num, den;
+    int num_, den_;
 
+public:
     // Funzione collegata alla classe -> ma non appartenente alla classe. Vengono dette funzioni di classe.
     static int gcd(int m, int n)
     {
@@ -19,28 +21,30 @@ struct rational
         return m;
     }
 
-    rational(int a, int b) {
-        assert(b!=0);
-        if (b < 0) {
-            a = -a;
-            b = -b;
+    rational(int num = 0, int den = 1)
+    {
+        assert(den != 0);
+        if (den < 0)
+        {
+            num = -num;
+            den = -den;
         }
 
-        int MCD = gcd(a,b);
+        int MCD = gcd(num, den);
 
-        this->num = a/MCD;
-        this->den = b/MCD;
+        this->num_ = num / MCD;
+        this->den_ = den / MCD;
     }
 
-    rational operator + (const rational &b) const
+    rational operator+(const rational &b) const
     {
         // Porto a e b allo stesso denominatore
         // Calcolo il minimo comune multiplo (prodotto dei numeri diviso MCD)
-        int mcm = this->den / gcd(this->den, b.den) * b.den;
+        int mcm = this->den_ / gcd(this->den_, b.den_) * b.den_;
         // Porto a al denominatore mcm
         // Porto b al denominatore mcm
         // Sommo i numeratori
-        int s = this->num * mcm / this->den + b.num * mcm / b.den;
+        int s = this->num_ * mcm / this->den_ + b.num_ * mcm / b.den_;
         // Riduco ai minimi termini
         // divido numeratore e denominatore per il loro MCD
         int mcd = gcd(abs(s), mcm);
@@ -48,33 +52,36 @@ struct rational
         return rational{s / mcd, mcm / mcd};
     }
 
-    rational& operator + (const rational &b) 
+    rational &operator+(const rational &b)
     {
         // Porto a e b allo stesso denominatore
         // Calcolo il minimo comune multiplo (prodotto dei numeri diviso MCD)
-        int mcm = this->den / gcd(this->den, b.den) * b.den;
+        int mcm = this->den_ / gcd(this->den_, b.den_) * b.den_;
         // Porto a al denominatore mcm
         // Porto b al denominatore mcm
         // Sommo i numeratori
-        int s = this->num * mcm / this->den + b.num * mcm / b.den;
+        int s = this->num_ * mcm / this->den_ + b.num_ * mcm / b.den_;
         // Riduco ai minimi termini
         // divido numeratore e denominatore per il loro MCD
         int mcd = gcd(abs(s), mcm);
 
-        this->num = s/mcd;
-        this->den = mcm/mcd;
+        this->num_ = s / mcd;
+        this->den_ = mcm / mcd;
         return *this;
     }
 
-    bool operator==(const rational& b) const {
-        return this->num == b.num && this->den == b.den;
+    bool operator==(const rational &b) const
+    {
+        return this->num_ == b.num_ && this->den_ == b.den_;
     }
+
+    friend std::ostream &operator<<(std::ostream &os, const rational &r); 
 };
-// In C gli operatori sono metodi del primo oggetto, ma se non sono presenti, possono essere una funzione esterna. 
+// In C gli operatori sono metodi del primo oggetto, ma se non sono presenti, possono essere una funzione esterna.
 // In questo caso, se volessimo scrivere su uno stream un tipo razionale dobbiamo scrivere una funzione esterna
-std::ostream& operator << (std::ostream& os, const rational& r)
+std::ostream &operator<<(std::ostream &os, const rational &r)
 {
-    os << r.num << "/" << r.den;
+    os << r.num_ << "/" << r.den_;
     return os;
 }
 
@@ -83,15 +90,21 @@ int main()
 
     using namespace std;
 
-    rational d = {1, 10};
-    rational q = {2, 10};
+    rational d = 5;
+    rational q = -3;
     rational x = d + q;
-    
+
     std::cout << x << endl;
-    if (x == rational{3,10}) {
+
+    std::vector<rational> v;
+    v.push_back(d);
+
+    if (x == rational{3, 10})
+    {
         cout << "uguale\n";
     }
-    else {
+    else
+    {
         cout << "diverso\n";
     }
 
