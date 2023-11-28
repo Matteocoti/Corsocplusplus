@@ -129,9 +129,15 @@ int main(int argc, char** argv) {
     if (!os) 
         return -1;
 
+    // Il secondo elemento é un delimitatore, ovvero cosa vogliamo tra un numero e l'altro
+    // Gli stream sono indipendenti dalle stringhe
+    std::copy(begin(v), end(v), std::ostream_iterator<double>(os, "\n"));
+
+
+
     // Stessa funzione ma sto indirizzando la scrittura su due output differenti 
-    scrivi_vettore(os, v);
-    scrivi_vettore(std::cout, v);
+    //scrivi_vettore(os, v);
+    //scrivi_vettore(std::cout, v);
 
     return 0;
 }
