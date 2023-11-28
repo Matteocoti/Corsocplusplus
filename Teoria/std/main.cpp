@@ -105,6 +105,18 @@ int main(int argc, char** argv) {
         return 1;
     }
 
+    std::vector<int> a = {1, 2, 3, 4, 5};
+    
+    // Così chiamo il costruttore di copia
+    //std::vector<int> b = a;
+
+    auto it_start = a.begin();
+    //auto it_stop = it_start + 3; // Con gli iteratori posso dire di avanzare di tre
+    auto it_stop = it_start;
+    advance(it_stop, 3); // Stessa cosa
+    std::vector<int> b(it_start, it_stop); // Anche in questo caso l'elemento puntato da it_stop é escluso
+
+
     FILE* fo;
     
     // vector v(); // Most vexing parsing -> pensa sia una funzione v che restituisce un vector 
