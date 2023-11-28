@@ -70,6 +70,13 @@ struct rational
         return this->num == b.num && this->den == b.den;
     }
 };
+// In C gli operatori sono metodi del primo oggetto, ma se non sono presenti, possono essere una funzione esterna. 
+// In questo caso, se volessimo scrivere su uno stream un tipo razionale dobbiamo scrivere una funzione esterna
+std::ostream& operator << (std::ostream& os, const rational& r)
+{
+    os << r.num << "/" << r.den;
+    return os;
+}
 
 int main()
 {
@@ -80,6 +87,7 @@ int main()
     rational q = {2, 10};
     rational x = d + q;
     
+    std::cout << x << endl;
     if (x == rational{3,10}) {
         cout << "uguale\n";
     }
