@@ -1,6 +1,8 @@
 #include <iostream>
 #include <cassert>
 #include <vector>
+#include <algorithm>
+#include <iterator>
 
 class rational
 {
@@ -70,9 +72,23 @@ public:
         return *this;
     }
 
+
     bool operator==(const rational &b) const
     {
         return this->num_ == b.num_ && this->den_ == b.den_;
+    }
+
+    bool operator<(const rational &b) const
+    {
+
+        int mcm = this->den_ / gcd(this->den_, b.den_) * b.den_;
+
+        return (this->num_ * (mcm / this->den_)) < (b.num_ * (mcm / b.den_));
+    }
+
+    bool operator>(const rational &b) const 
+    {
+        return (!(*this<b) && !(*this==b));
     }
 
     friend std::ostream &operator<<(std::ostream &os, const rational &r); 
@@ -96,19 +112,11 @@ int main()
 
     // 7 viene riconosciuto come un rational con 7 come numeratore (viene chiamato il costruttore rational(7))
     rational z = x + 7;
-    std::cout << x << endl;
 
-    std::vector<rational> v;
-    v.push_back(d);
+    std::vector<rational> v ={ 1, rational(1,2), rational(-3,4), rational(-17, 245363837)};
+    std::sort(begin(v), end(v));
 
-    if (x == rational{3, 10})
-    {
-        cout << "uguale\n";
-    }
-    else
-    {
-        cout << "diverso\n";
-    }
+    copy(begin(v), end(v), std::ostream_iterator<rational>(std::cout, ","));
 
     return 0;
 }
