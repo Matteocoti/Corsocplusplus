@@ -97,7 +97,8 @@ public:
 // In questo caso, se volessimo scrivere su uno stream un tipo razionale dobbiamo scrivere una funzione esterna
 std::ostream &operator<<(std::ostream &os, const rational &r)
 {
-    os << r.num_ << "/" << r.den_;
+    if (r.den_ == 1) os << r.num_;
+    else os << r.num_ << "/" << r.den_;
     return os;
 }
 
