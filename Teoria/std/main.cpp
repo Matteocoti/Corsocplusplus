@@ -3,6 +3,10 @@
 #include <vector>
 #include <algorithm>
 
+// Per standard output invece che su file
+#include <iostream> 
+
+
 /**
  * Tre categorie di cose dentro la libreria: 
  * - container -> classi che rappresentano delle strutture dati (esempio vector, list, set)
@@ -48,6 +52,49 @@ auto leggiDaFile(const char* filePath) {
 }
 
 
+// template<typename T>
+// bool scrivi_vettore(const std::string& fileName, const std::vector<T>& v){
+
+//     std::ofstream os(fileName); 
+
+//     if (!os) return false; 
+    
+//     // Si può vedere il codice sorgente perché é una funzione a template, quindi non si può compilare prima
+
+//     // Se v fosse una lista, il funzionamento sarebbe lo stesso a meno del tipo dell'iteratore
+//     auto it_stop = v.end();
+
+//     // Prendi v e chiama begin e hai l'iteratore, poi ad ogni ciclo chiami il next e lo fai fino ad end.
+//     // La forma si chiama Range Based For 
+//     // x é solo il nome che diamo per accedere il nome corrente di v
+//     for (const auto& x : v) {
+//         os << x << '\n';
+//     }
+
+//     return true;
+// }
+
+/**
+ * La funzione di prima non va bene, perché nel momento in cui desidero stampare su standard output non va più bene.
+ * Dovrei fare un overload.
+ * 
+ * std::ostream classe generica di stream di output
+*/
+template<typename T>
+void scrivi_vettore(std::ostream& os, const std::vector<T>& v){
+
+    // Si può vedere il codice sorgente perché é una funzione a template, quindi non si può compilare prima
+    // Se v fosse una lista, il funzionamento sarebbe lo stesso a meno del tipo dell'iteratore
+    auto it_stop = v.end();
+
+    // Prendi v e chiama begin e hai l'iteratore, poi ad ogni ciclo chiami il next e lo fai fino ad end.
+    // La forma si chiama Range Based For 
+    // x é solo il nome che diamo per accedere il nome corrente di v
+    for (const auto& x : v) {
+        os << x << '\n';
+    }
+}
+
 int main(int argc, char** argv) {
 
     using std::vector;
@@ -64,22 +111,17 @@ int main(int argc, char** argv) {
 
     auto v =  leggiDaFile(argv[1]);
 
-    std::ofstream os(argv[2]); 
-
-    if (!os) return 3; 
-    
-    // Si può vedere il codice sorgente perché é una funzione a template, quindi non si può compilare prima
     sort(v.begin(), v.end());
-    // Se v fosse una lista, il funzionamento sarebbe lo stesso a meno del tipo dell'iteratore
-    auto it_stop = v.end();
 
-    // Prendi v e chiama begin e hai l'iteratore, poi ad ogni ciclo chiami il next e lo fai fino ad end.
-    // La forma si chiama Range Based For 
-    // x é solo il nome che diamo per accedere il nome corrente di v
-    for (const auto& x : v) {
-        os << x << '\n';
-    }
-    
+    std::ofstream os(argv[2]);
+
+    if (!os) 
+        return -1;
+
+    // Stessa funzione ma sto indirizzando la scrittura su due output differenti 
+    scrivi_vettore(os, v);
+    scrivi_vettore(std::cout, v);
+
     return 0;
 }
 
