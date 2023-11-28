@@ -1,4 +1,5 @@
 #include <iostream>
+#include <cassert>
 
 struct rational
 {
@@ -16,6 +17,19 @@ struct rational
         }
 
         return m;
+    }
+
+    rational(int a, int b) {
+        assert(b!=0);
+        if (b < 0) {
+            a = -a;
+            b = -b;
+        }
+
+        int MCD = gcd(a,b);
+
+        this->num = a/MCD;
+        this->den = b/MCD;
     }
 
     rational operator + (const rational &b) const
@@ -50,6 +64,10 @@ struct rational
         this->num = s/mcd;
         this->den = mcm/mcd;
         return *this;
+    }
+
+    bool operator==(const rational& b) const {
+        return this->num == b.num && this->den == b.den;
     }
 };
 
