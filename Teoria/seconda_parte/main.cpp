@@ -94,6 +94,8 @@ int main()
     rational q = -3;
     rational x = d + q;
 
+    // 7 viene riconosciuto come un rational con 7 come numeratore (viene chiamato il costruttore rational(7))
+    rational z = x + 7;
     std::cout << x << endl;
 
     std::vector<rational> v;
