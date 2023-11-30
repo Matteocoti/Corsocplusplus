@@ -193,8 +193,9 @@ int main()
 
     // é un albero binario con le chiavi come foglie, quindi la complessità della ricerca é
     // logaritmo in base 2 di n (al massimo)
-    std::map<rational, int> rational_count;
+    //std::map<rational, int> rational_count;
 
+    std::unordered_map<rational, int> rational_count;
 
     std::sort(begin(f), end(f));
     size_t count = 0;
