@@ -4,7 +4,7 @@
 #include <algorithm>
 #include <iterator>
 #include <fstream>
-#include <set> 
+#include <unordered_set> 
 
 class rational
 {
@@ -87,6 +87,22 @@ public:
     friend std::ostream &operator<<(std::ostream &os, const rational &r);
     friend std::istream& operator>>(std::istream &is, rational& r);
 
+    size_t GetHash() const {
+        std::hash<int>hash_obj;
+        auto num_hash = hash_obj(num_);
+        auto den_hash = hash_obj(den_);
+        return num_hash + den_hash;
+    };
+
+    // struct hash{
+    //     size_t operator()(const rational& r) const {
+    //         std::hash<int>hash_obj;
+    //         auto num_hash = hash_obj(r.num_);
+    //         auto den_hash = hash_obj(r.den_);
+    //         return num_hash + den_hash;
+    //     }
+    // };
+
 };
 // In C gli operatori sono metodi del primo oggetto, ma se non sono presenti, possono essere una funzione esterna.
 // In questo caso, se volessimo scrivere su uno stream un tipo razionale dobbiamo scrivere una funzione esterna
@@ -111,12 +127,20 @@ std::istream& operator>>(std::istream &is, rational& r)
     // }
     if (is.eof()) {
         r = rational(num);
+        is.setstate(std::ios_base::goodbit);
         return is;
     }
 
     is >> tmp;
+
+    if (!is) {
+        r = rational(num);
+        is.setstate(std::ios_base::goodbit);
+        return is; 
+    }
+
     // Controllo se é presente uno spazio vuoto
-    if ((tmp != '/') || is.eof()) {
+    if ((tmp != '/') || tmp == '\000') {
         is.unget();
         r = rational(num);
         return is;
@@ -128,6 +152,14 @@ std::istream& operator>>(std::istream &is, rational& r)
     return is;
 }
 
+namespace std {
+    template<>
+    struct hash<rational> {
+        size_t operator() (const rational& r) const {
+            return r.GetHash();
+        }
+    };
+}
 
 int main()
 {
@@ -149,23 +181,17 @@ int main()
 
     copy(begin(v), end(v), ostream_iterator<rational>(std::cout, ","));
 
-    std::ifstream is("rationals.txt");
+    std::ifstream is("1.txt");
 
     if (!is)
         return 1;
 
     std::vector<rational> f;
-
-    while (1) {
-        rational r;
-        is >> r;
-        if (!is) break;
-
-        f.push_back(r);
-        
-    }
+    rational r;
+    while (is >> r) f.push_back(r);
+    
     std::cout << endl << endl;
-    std::set<rational> s(begin(f), end(f));
+    std::unordered_set<rational> s(begin(f), end(f));
     copy(begin(s), end(s), ostream_iterator<rational>(std::cout, ","));
     std::cout << endl;
 
