@@ -4,7 +4,7 @@
 #include <algorithm>
 #include <iterator>
 #include <fstream>
-#include <cctype>       // std::isdigit
+#include <set> 
 
 class rational
 {
@@ -110,8 +110,8 @@ std::ostream &operator<<(std::ostream &os, const rational &r)
 std::istream& operator>>(std::istream &is, rational& r) 
 {
     char tmp;
-    
-    if (!(is >> r.num_)) return is;
+    int num, den;
+    if (!(is >> num)) return is;
 
     // is >> tmp;
     
@@ -120,14 +120,18 @@ std::istream& operator>>(std::istream &is, rational& r)
     //     return is;
     // }
 
-    if (!(is.get(tmp))) return is;
+    is >> tmp;
 
     // Controllo se é presente uno spazio vuoto
-    if (tmp == ' ') return is;
+    if (tmp != '/') {
+        is.unget();
+        r = rational(num);
+        return is;
+    }
 
+    if (!(is >> den)) return is;
 
-    is >> r.den_;
-
+    r = rational(num, den);
     return is;
 }
 
@@ -168,8 +172,8 @@ int main()
         
     }
     std::cout << endl << endl;
-    
-    copy(begin(f), end(f), ostream_iterator<rational>(std::cout, ","));
+    std::set<rational> s(begin(f), end(f));
+    copy(begin(s), end(s), ostream_iterator<rational>(std::cout, ","));
     std::cout << endl;
 
     return 0;
