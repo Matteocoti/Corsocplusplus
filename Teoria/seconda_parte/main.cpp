@@ -3,6 +3,8 @@
 #include <vector>
 #include <algorithm>
 #include <iterator>
+#include <fstream>
+#include <cctype>       // std::isdigit
 
 class rational
 {
@@ -92,6 +94,9 @@ public:
     }
 
     friend std::ostream &operator<<(std::ostream &os, const rational &r); 
+
+    friend std::istream &operator>>(std::istream &is, rational& r);
+
 };
 // In C gli operatori sono metodi del primo oggetto, ma se non sono presenti, possono essere una funzione esterna.
 // In questo caso, se volessimo scrivere su uno stream un tipo razionale dobbiamo scrivere una funzione esterna
@@ -101,6 +106,31 @@ std::ostream &operator<<(std::ostream &os, const rational &r)
     else os << r.num_ << "/" << r.den_;
     return os;
 }
+
+std::istream& operator>>(std::istream &is, rational& r) 
+{
+    char tmp;
+    
+    if (!(is >> r.num_)) return is;
+
+    // is >> tmp;
+    
+    // if (tmp != '/') {
+    //     is.setstate(std::ios_base::iostate::_S_failbit);
+    //     return is;
+    // }
+
+    if (!(is.get(tmp))) return is;
+
+    // Controllo se é presente uno spazio vuoto
+    if (tmp == ' ') return is;
+
+
+    is >> r.den_;
+
+    return is;
+}
+
 
 int main()
 {
@@ -121,6 +151,26 @@ int main()
     sort(begin(v), end(v), greater<rational>());
 
     copy(begin(v), end(v), ostream_iterator<rational>(std::cout, ","));
+
+    std::ifstream is("rationals.txt");
+
+    if (!is)
+        return 1;
+
+    std::vector<rational> f;
+
+    while (1) {
+        rational r;
+        is >> r;
+        if (!is) break;
+
+        f.push_back(r);
+        
+    }
+    std::cout << endl << endl;
+    
+    copy(begin(f), end(f), ostream_iterator<rational>(std::cout, ","));
+    std::cout << endl;
 
     return 0;
 }
