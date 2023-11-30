@@ -222,7 +222,8 @@ int main()
         rational_count[number]++;
     }
 
-    std::cout << endl;
-
+    for (const auto x: rational_count) {
+        std::cout << "Il valore " << x.first << " compare " << x.second << " volte" << endl;
+    }
     return 0;
 }
