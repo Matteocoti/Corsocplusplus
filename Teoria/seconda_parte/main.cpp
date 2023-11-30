@@ -206,13 +206,19 @@ int main()
         // } else {
         //     rational_count[number]++;
         // }
-        
         // La parte di sopra ho due volte la ricerca, perché l'operatore [] é una ricerca che non 
         // da errori. Inoltre, crea anche. Mentre con il metodo at() ho la gestione degli errori e non crea.
 
+        // Altra soluzione
+        // auto it = rational_count.find(number);
+        // if (it == rational_count.end()) {
+        //     rational_count.insert(*it,1);
+        // }
+        // else (*it).second++;
+
         // Se la chiave non é presente, viene costruita con il secondo valore di default della mappa, quindi in 
         // questo caso 0
-        rational_count[number]++;   
+        rational_count[number]++;
     }
 
     std::cout << endl;
