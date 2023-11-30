@@ -5,6 +5,7 @@
 #include <iterator>
 #include <fstream>
 #include <unordered_set> 
+#include <map>
 
 class rational
 {
@@ -127,21 +128,22 @@ std::istream& operator>>(std::istream &is, rational& r)
     // }
     if (is.eof()) {
         r = rational(num);
-        is.setstate(std::ios_base::goodbit);
         return is;
     }
 
     is >> tmp;
 
-    if (!is) {
+    if (is.eof()) {
+        is.clear();
+
         r = rational(num);
-        is.setstate(std::ios_base::goodbit);
         return is; 
     }
 
     // Controllo se é presente uno spazio vuoto
-    if ((tmp != '/') || tmp == '\000') {
+    if ((tmp != '/')){
         is.unget();
+
         r = rational(num);
         return is;
     }
@@ -179,9 +181,8 @@ int main()
     // Greater é un function object -> una classe che esegue il compito di una funzione
     sort(begin(v), end(v), greater<rational>());
 
-    copy(begin(v), end(v), ostream_iterator<rational>(std::cout, ","));
 
-    std::ifstream is("1.txt");
+    std::ifstream is("rationals.txt");
 
     if (!is)
         return 1;
@@ -189,10 +190,31 @@ int main()
     std::vector<rational> f;
     rational r;
     while (is >> r) f.push_back(r);
-    
-    std::cout << endl << endl;
-    std::unordered_set<rational> s(begin(f), end(f));
-    copy(begin(s), end(s), ostream_iterator<rational>(std::cout, ","));
+
+    // é un albero binario con le chiavi come foglie, quindi la complessità della ricerca é
+    // logaritmo in base 2 di n (al massimo)
+    std::map<rational, int> rational_count;
+
+
+    std::sort(begin(f), end(f));
+    size_t count = 0;
+    rational x_old = f[0];
+    // copy(begin(s), end(s), ostream_iterator<rational>(std::cout, ","));
+    for (const auto& number: f) {
+        // if (rational_count.find(number) == rational_count.end()){
+        //     rational_count[number] = 1;
+        // } else {
+        //     rational_count[number]++;
+        // }
+        
+        // La parte di sopra ho due volte la ricerca, perché l'operatore [] é una ricerca che non 
+        // da errori. Inoltre, crea anche. Mentre con il metodo at() ho la gestione degli errori e non crea.
+
+        // Se la chiave non é presente, viene costruita con il secondo valore di default della mappa, quindi in 
+        // questo caso 0
+        rational_count[number]++;   
+    }
+
     std::cout << endl;
 
     return 0;
