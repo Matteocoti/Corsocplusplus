@@ -53,4 +53,6 @@ int main(void)
 
 	canvas_out(c, stdout);
 	delete_canvas(c);
+
+	return 0;
 }

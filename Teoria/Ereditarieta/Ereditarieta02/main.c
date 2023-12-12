@@ -7,16 +7,36 @@
 
 typedef struct shape {
 	char *type_;
-	int x0_, y0_, x1_, y1_, r_;
+	int x_, y_;
 	char ch_;
 } shape;
-shape *shape_create(shape *this, const char *type, int x0, int y0, int x1, int y1, int r, char ch) {
+
+typedef struct point {
+	shape base;
+} point;
+
+
+
+typedef struct line {
+	shape base;
+	int x1_, y1_;
+} line;
+
+typedef struct rectangle {
+	shape base;
+	int  x1_, y1_;
+} rectangle;
+
+typedef struct circle {
+	shape base;
+ 	int r_;
+} circle;
+
+
+shape *shape_create(shape *this, const char *type, int x, int y, char ch) {
 	this->type_ = strcpy(malloc(strlen(type) + 1), type);
-	this->x0_ = x0;
-	this->y0_ = y0;
-	this->x1_ = x1;
-	this->y1_ = y1;
-	this->r_ = r;
+	this->x_ = x;
+	this->y_ = y;
 	this->ch_ = ch;
 	return this;
 }
@@ -24,25 +44,23 @@ shape *shape_destroy(shape *this) {
 	free(this->type_);
 	return this;
 }
-shape *new_shape(const char *type, int x0, int y0, int x1, int y1, int r, char ch) {
-	return shape_create(malloc(sizeof(shape)), type, x0, y0, x1, y1, r, ch);
+shape *new_shape(const char *type, int x, int y, char ch) {
+	return shape_create(malloc(sizeof(shape)), type, x, y, ch);
 }
 void delete_shape(shape *this) {
 	free(shape_destroy(this));
 }
 void shape_print(const shape *this, canvas *c) {
-	if (strcmp(this->type_, "point") == 0) {
-		canvas_set(c, this->x0_, this->y0_, this->ch_);
-	}
-	else if (strcmp(this->type_, "line") == 0) {
-		canvas_line(c, this->x0_, this->y0_, this->x1_, this->y1_, this->ch_);
-	}
-	else if (strcmp(this->type_, "rectangle") == 0) {
-		canvas_rectangle(c, this->x0_, this->y0_, this->x1_, this->y1_, this->ch_);
-	}
-	else if (strcmp(this->type_, "circle") == 0) {
-		canvas_circle(c, this->x0_, this->y0_, this->r_, this->ch_);
-	}
+	canvas_set(c, this->x_, this->y_, this->ch_);
+
+	// if (strcmp(this->type_, "point") == 0) {
+	// }
+	// else if (strcmp(this->type_, "line") == 0) {
+	// }
+	// else if (strcmp(this->type_, "rectangle") == 0) {
+	// }
+	// else if (strcmp(this->type_, "circle") == 0) {
+	// }
 }
 
 
@@ -93,7 +111,12 @@ int main(void)
 	canvas* c = new_canvas(80, 25);
 
 	size_t n = 0;
-	shape **sv = read_shapes(stdin, &n);
+
+	FILE *f; 
+
+	f = fopen("drawing1.txt", "r");
+	
+	shape **sv = read_shapes(f, &n);
 
 	for (size_t i = 0; i < n; ++i) {
 		shape_print(sv[i], c);
@@ -105,4 +128,6 @@ int main(void)
 		delete_shape(sv[i]);
 	}
 	delete_canvas(c);
+
+	return 0;
 }
